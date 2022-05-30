@@ -14,7 +14,8 @@ body{
     position: absolute;
     width: 100px;
     height: 20px;
-    background-color: blue;
+    background-color: rgba(0, 0, 255, 0.849);
+    border-radius: 30px;
 
 
 }
@@ -23,6 +24,13 @@ body{
     width: 100px;
     height: 20px;
     background-color: rgb(23, 23, 77);
+    border-radius: 30px;
+}
 
-
+.ball {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: red;
 }

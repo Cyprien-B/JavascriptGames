@@ -1,19 +1,25 @@
-const grid = document.querySelector('.grid')
-const blockWidth = 100
-const blockHeight = 20
+const grid = document.querySelector(".grid");
+const blockWidth = 100;
+const blockHeight = 20;
+const boardWidth = 560
+let xDirection = -2
+let yDirection = 2
 
 const userStart = [230, 10];
 let currentPosition = userStart;
 
+const ballStart = [270, 40]
+let ballCurrentPosition = ballStart
+
 // creat class block
 class Block {
-    constructor(xAxis, yAxis) {
-      this.bottomLeft = [xAxis, yAxis]
-      this.bottomRight = [xAxis + blockWidth, yAxis]
-      this.topRight = [xAxis + blockWidth, yAxis + blockHeight]
-      this.topLeft = [xAxis, yAxis + blockHeight]
-    }
+  constructor(xAxis, yAxis) {
+    this.bottomLeft = [xAxis, yAxis];
+    this.bottomRight = [xAxis + blockWidth, yAxis];
+    this.topRight = [xAxis + blockWidth, yAxis + blockHeight];
+    this.topLeft = [xAxis, yAxis + blockHeight];
   }
+}
 //ci dessous on construit tout les blocks
 const blocks = [
   new Block(10, 270),
@@ -31,43 +37,75 @@ const blocks = [
   new Block(230, 210),
   new Block(340, 210),
   new Block(450, 210),
-]
+];
 
 function addBlocks() {
-    for (let i = 0; i < blocks.length; i++) {
-        const block = document.createElement('div')
-        block.classList.add('block')
-        block.style.left = blocks[i].bottomLeft[0] + 'px'  
-        block.style.bottom = blocks[i].bottomLeft[1] + 'px'
-        grid.appendChild(block)
-        
-    }
-
+  for (let i = 0; i < blocks.length; i++) {
+    const block = document.createElement("div");
+    block.classList.add("block");
+    block.style.left = blocks[i].bottomLeft[0] + "px";
+    block.style.bottom = blocks[i].bottomLeft[1] + "px";
+    grid.appendChild(block);
+  }
 }
 
-addBlocks()
-
-
 // add un user
-const user = document.createElement('div')
-user.classList.add("user")
-user.style.left= currentPosition[0]+ 'px'
-user.style.bottom= currentPosition[1]+ 'px'
-grid.appendChild(user)
+const user = document.createElement("div");
+user.style.left = currentPosition[0] + "px";
+user.style.bottom = currentPosition[1] + "px";
+user.classList.add("user");
+grid.appendChild(user);
 
+
+//place l'user
+function drawUser() {
+  user.style.left = currentPosition[0] + "px";
+  user.style.bottom = currentPosition[1] + "px";
+}
+
+
+//place la ball
+function drawBall() {
+ball.style.left = ballCurrentPosition[0] + "px";
+ball.style.bottom = ballCurrentPosition[1] + "px";
+  
+}
 
 // bouger l'user
 function moveUser(e) {
   switch (e.key) {
-    case 'Arrowleft':
-      currentPosition[0] -= 10
-      user.style.left= currentPosition[0]+ 'px'
-      
-      break;
-  
-    default:
-      break;
+    case 'ArrowLeft':
+      if (currentPosition[0] > 0) {
+        currentPosition[0] -= 10
+        drawUser()   
+      }
+      break
+    case 'ArrowRight':
+      if (currentPosition[0] < (boardWidth - blockWidth)) {
+        currentPosition[0] += 10
+        drawUser()   
+      }
+      break
   }
 }
+document.addEventListener('keydown', moveUser)
+document.addEventListener("DOMContentLoaded", addBlocks);
 
-1.55
+//add ball
+const ball = document.createElement("div")
+ball.classList.add("ball")
+ball.style.left = ballCurrentPosition[0] + "px";
+ball.style.bottom = ballCurrentPosition[1] + "px";
+grid.appendChild(ball);
+
+//move ball
+
+function moveBall() {
+    ballCurrentPosition[0] += xDirection
+    ballCurrentPosition[1] += yDirection
+    drawBall()
+    checkForCollisions()
+}
+timerId = setInterval(moveBall, 30)
+
+  
